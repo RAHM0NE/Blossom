@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'TingleTuner';
-  src: url('fonts/TINYISLANDERS-NOYG.TTF') format('truetype');
+  src: url('fonts/KH2_ALL_MENU_I.TTF') format('truetype');
 }
 
 @font-face {
@@ -45,7 +45,7 @@ h1 {
   color: #ffffff;
   position: absolute;
   font-size: 2.8em;
-  font-family: 'Smash';
+  font-family: 'TingleTuner';
   top: var(--level-top);
   right: var(--level-right);
   bottom: var(--level-bottom);
