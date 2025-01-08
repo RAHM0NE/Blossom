@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heart Rate Monitor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    h1 {
+      color: #444;
+    }
+    .bpm {
+      font-size: 3em;
+      color: #e74c3c;
+    }
+  </style>
+</head>
+<body>
+  <h1>Heart Rate Monitor</h1>
+  <p> <span class="bpm">--</span></p>
+
+  <script>
+    // Connect to WebSocket server
+    const ws = new WebSocket('ws://localhost:8080');
+
+    // Update BPM on the webpage
+    ws.onmessage = (event) => {
+      document.querySelector('.bpm').textContent = event.data;
+    };
+
+    ws.onopen = () => {
+      console.log('WebSocket connected');
+    };
+
+    ws.onclose = () => {
+      console.log('WebSocket disconnected');
+    };
+  </script>
+</body>
+</html>
