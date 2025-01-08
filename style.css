@@ -1,8 +1,92 @@
+@font-face {
+  font-family: 'TingleTuner';
+  src: url('fonts/TINYISLANDERS-NOYG.TTF') format('truetype');
+}
+
+@font-face {
+  font-family: 'Smash';
+  src: url('fonts/FOT-RODIN PRO UB.OTF') format('opentype');
+}
+
+:root {
+  --bpm-top: auto;
+  --bpm-right: auto;
+  --bpm-bottom: 0;
+  --bpm-left: 0;
+}
+
 html, body {
   margin: 0;
   padding: 0;
+  height: 100%;
+  width: 100%;
+  max-width: 1920px;
+  max-height: 1080px;
+  overflow: hidden;
 }
 
 canvas {
   display: block;
+}
+
+body {
+  font-family: 'TingleTuner', sans-serif;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; /* Ensure elements are stacked vertically */
+  margin: 0 auto; /* Center the body content */
+}
+
+h1 {
+  color: #ffffff;
+  position: absolute;
+  font-size: 2.8em;
+  font-family: 'Smash';
+  top: var(--level-top);
+  right: var(--level-right);
+  bottom: var(--level-bottom);
+  left: var(--level-left);
+  margin: 40px; /* Optional: Add some margin if needed */
+  -webkit-text-stroke: 1px #000; /* Stroke border */
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 1),
+
+  
+  1px 4px 0px rgba(0, 0, 0, 1),
+  0px 5px 0px rgba(0, 0, 0, 1),
+  3px 8px 0px rgba(0, 0, 0, 1),
+  4px 9px 0px rgba(0, 0, 0, 1);
+  
+}
+
+.centered-gif {
+  width: 200px; /* Adjust the size as needed */
+  margin-bottom: 20px; /* Space between the GIF and the h1 */
+  
+}
+
+.bpm {
+  font-size: 2.8em;
+  color: #ffffff;
+  font-family: 'Smash';
+  position: absolute;
+  top: var(--bpm-top);
+  right: var(--bpm-right);
+  bottom: var(--bpm-bottom);
+  left: var(--bpm-left);
+  margin: 40px; /* Optional: Add some margin if needed */
+  -webkit-text-stroke: 2.5px #000; /* Stroke border */
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 1),
+
+  
+  1px 4px 0px rgba(0, 0, 0, 1),
+  0px 5px 0px rgba(0, 0, 0, 1),
+  3px 8px 0px rgba(0, 0, 0, 1),
+  4px 9px 0px rgba(0, 0, 0, 1);
+  
+  letter-spacing: -4px; /* Reduce the space between characters */
+
 }
