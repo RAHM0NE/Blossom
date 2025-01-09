@@ -63,9 +63,14 @@ h1 {
 }
 
 .centered-gif {
-  width: 200px; /* Adjust the size as needed */
+  width: 100px; /* Adjust the size as needed */
   margin-bottom: 20px; /* Space between the GIF and the h1 */
-  
+  top: var(--fairy-top);
+  right: var(--fairy-right);
+  bottom: var(--fairy-bottom);
+  left: var(--fairy-left);
+  position: absolute;
+
 }
 
 .bpm {
@@ -88,5 +93,25 @@ h1 {
   4px 9px 0px rgba(0, 0, 0, 1);
   
   letter-spacing: -4px; /* Reduce the space between characters */
+
+}
+
+.bpm-text {
+  font-size: 0.5em; /* Make the BPM text smaller */  
+  -webkit-text-stroke: 1.2px #000; /* Stroke border */
+  letter-spacing: -2px; /* Reduce the space between characters */
+  position: relative; /* Enable relative positioning */
+  left: 3px; /* Adjust this value to push the text to the left */
+
+}
+
+#bpm-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Ensure the video doesn't interfere with other interactions */
+  z-index: -1; /* Ensure the video is below the GIF */
 
 }

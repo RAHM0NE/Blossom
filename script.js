@@ -1,75 +1,142 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Connect to WebSocket server
-    const ws = new WebSocket('ws://localhost:8080');
-    let currentGif = 'happy-cat.gif'; // Track the current GIF
-  
-    // Function to interpolate between two colours
-    function interpolateColour(colour1, colour2, factor) {
-      const result = colour1.slice();
-      for (let i = 0; i < 3; i++) {
-        result[i] = Math.round(result[i] + factor * (colour2[i] - colour1[i]));
+  // Connect to WebSocket server
+  const ws = new WebSocket('ws://localhost:8080');
+  let currentGif = 'light-fairy.gif'; // Track the current GIF
+  const audio = document.getElementById('high-bpm-audio'); // Get the audio element
+  const video = document.getElementById('bpm-video'); // Get the video element
+  audio.volume = 0.5; // Set the volume to 50%
+  let videoPlaying = false; // Flag to track if the video is playing
+  let lastVideoPlayTime = 0; // Timestamp of the last time the video was played
+  const cooldownTime = 1 * 60 * 1000; // 1 minute in milliseconds
+
+  // Function to interpolate between two colours
+  function interpolateColour(colour1, colour2, factor) {
+    const result = colour1.slice();
+    for (let i = 0; i < 3; i++) {
+      result[i] = Math.round(result[i] + factor * (colour2[i] - colour1[i]));
+    }
+    return `rgb(${result.join(',')})`;
+  }
+
+  // Convert hex colour to RGB array
+  function hexToRgb(hex) {
+    const bigint = parseInt(hex.slice(1), 16);
+    return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
+  }
+
+  const colour1 = hexToRgb('#FFFFFF'); // White
+  const colour2 = hexToRgb('#FFA500'); // Orange
+  const colour3 = hexToRgb('#FF0000'); // Red
+
+  // Enable media playback on user interaction
+  function enableMediaPlayback() {
+    audio.play().then(() => {
+      audio.pause();
+      audio.currentTime = 0;
+    }).catch(error => {
+      console.error('Audio playback failed:', error);
+    });
+
+    video.play().then(() => {
+      video.pause();
+      video.currentTime = 0;
+    }).catch(error => {
+      console.error('Video playback failed:', error);
+    });
+
+    document.removeEventListener('click', enableMediaPlayback);
+  }
+
+  document.addEventListener('click', enableMediaPlayback);
+
+  // Update BPM on the webpage
+  ws.onmessage = (event) => {
+    console.log('Received data:', event.data); // Debugging line
+    const bpm = parseInt(event.data, 10);
+    console.log('Parsed BPM:', bpm); // Debugging line
+
+    if (!isNaN(bpm)) {
+      document.querySelector('.bpm').innerHTML = `${bpm} <span class="bpm-text">BPM</span>`;
+
+      // Calculate the colour based on BPM
+      let colour;
+      if (bpm <= 80) {
+        const factor = (bpm - 60) / (80 - 60);
+        colour = interpolateColour(colour1, colour2, factor);
+      } else {
+        const factor = (bpm - 80) / (100 - 80);
+        colour = interpolateColour(colour2, colour3, factor);
       }
-      return `rgb(${result.join(',')})`;
-    }
-  
-    // Convert hex colour to RGB array
-    function hexToRgb(hex) {
-      const bigint = parseInt(hex.slice(1), 16);
-      return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
-    }
-  
-    const colour1 = hexToRgb('#FFFFFF'); // White
-    const colour2 = hexToRgb('#FFA500'); // Orange
-    const colour3 = hexToRgb('#FF0000'); // Red
-  
-    // Update BPM on the webpage
-    ws.onmessage = (event) => {
-      console.log('Received data:', event.data); // Debugging line
-      const bpm = parseInt(event.data, 10);
-      console.log('Parsed BPM:', bpm); // Debugging line
-  
-      if (!isNaN(bpm)) {
-        document.querySelector('.bpm').textContent = bpm;
-  
-        // Calculate the colour based on BPM
-        let colour;
-        if (bpm <= 90) {
-          const factor = (bpm - 60) / (80 - 60);
-          colour = interpolateColour(colour1, colour2, factor);
-        } else {
-          const factor = (bpm - 80) / (100 - 80);
-          colour = interpolateColour(colour2, colour3, factor);
-        }
-        document.querySelector('.bpm').style.color = colour;
-  
-        // Change the GIF based on BPM value
-        const catGif = document.getElementById('cat-gif');
-        if (bpm > 75 && currentGif !== 'sad-cat.gif') {
-          catGif.src = 'sad-cat.gif';
-          catGif.alt = 'Sad Cat';
-          currentGif = 'sad-cat.gif';
-        } else if (bpm <= 70 && currentGif !== 'happy-cat.gif') {
-          catGif.src = 'happy-cat.gif';
-          catGif.alt = 'Happy Cat';
-          currentGif = 'happy-cat.gif';
+      document.querySelector('.bpm').style.color = colour;
+
+      // Change the GIF based on BPM value
+      const catGif = document.getElementById('fairy-gif');
+      if (bpm > 90 && currentGif !== 'dark fairy.gif') {
+        catGif.src = 'dark fairy.gif';
+        catGif.alt = 'Dark Fairy';
+        currentGif = 'dark fairy.gif';
+      } else if (bpm <= 90 && currentGif !== 'light fairy.gif') {
+        catGif.src = 'light fairy.gif';
+        catGif.alt = 'Light Fairy';
+        currentGif = 'light fairy.gif';
+      }
+
+      // Play or stop the audio based on BPM value
+      if (bpm > 100) {
+        if (audio.paused) {
+          audio.play();
         }
       } else {
-        console.error('Invalid BPM value:', event.data); // Debugging line
+        if (!audio.paused) {
+          audio.pause();
+          audio.currentTime = 0; // Reset the audio to the beginning
+        }
       }
-    };
-  
-    ws.onopen = () => {
-      console.log('WebSocket connected');
-    };
-  
-    ws.onclose = () => {
-      console.log('WebSocket disconnected');
-    };
-  
-    // Example: Update the position of the .bpm text
-    document.documentElement.style.setProperty('--bpm-top', '935px');
-    document.documentElement.style.setProperty('--bpm-left', '130px');
 
-    document.documentElement.style.setProperty('--level-top', '890px');
-    document.documentElement.style.setProperty('--level-right', '60px');
+      // Play the video based on BPM value and cooldown
+      const currentTime = Date.now();
+      console.log(`Current Time: ${currentTime}, Last Video Play Time: ${lastVideoPlayTime}, Cooldown Time: ${cooldownTime}`);
+      console.log(`Time since last video played: ${currentTime - lastVideoPlayTime}`);
+      if (bpm >= 90 && (currentTime - lastVideoPlayTime) >= cooldownTime) {
+        if (!videoPlaying) {
+          console.log('Playing video');
+          video.style.display = 'block';
+          video.play();
+          videoPlaying = true;
+          lastVideoPlayTime = currentTime; // Update the last play time
+          console.log(`Video started at: ${lastVideoPlayTime}`);
+        }
+      }
+    } else {
+      console.error('Invalid BPM value:', event.data); // Debugging line
+    }
+  };
+
+  // Event listener for when the video ends
+  video.addEventListener('ended', () => {
+    video.style.display = 'none';
+    videoPlaying = false;
+    lastVideoPlayTime = Date.now(); // Update the last play time when the video ends
+    console.log(`Video ended at: ${lastVideoPlayTime}`);
   });
+
+  ws.onopen = () => {
+    console.log('WebSocket connected');
+  };
+
+  ws.onclose = () => {
+    console.log('WebSocket disconnected');
+  };
+
+  // Example: Update the position of the BPM text
+  document.documentElement.style.setProperty('--bpm-top', '940px');
+  document.documentElement.style.setProperty('--bpm-left', '340px');
+
+  // Example: Update the position of the LEVEL text
+  document.documentElement.style.setProperty('--level-top', '890px');
+  document.documentElement.style.setProperty('--level-right', '100px');
+
+  // Example: Update the position of the .fairy text
+  document.documentElement.style.setProperty('--fairy-top', '20px');
+  document.documentElement.style.setProperty('--fairy-left', '80px');
+});
