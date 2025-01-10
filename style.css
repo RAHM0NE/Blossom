@@ -101,7 +101,7 @@ h1 {
   -webkit-text-stroke: 1.2px #000; /* Stroke border */
   letter-spacing: -2px; /* Reduce the space between characters */
   position: relative; /* Enable relative positioning */
-  left: 3px; /* Adjust this value to push the text to the left */
+  left: -9px; /* Adjust this value to push the text to the left */
 
 }
 

@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   audio.volume = 0.5; // Set the volume to 50%
   let videoPlaying = false; // Flag to track if the video is playing
   let lastVideoPlayTime = 0; // Timestamp of the last time the video was played
-  const cooldownTime = 1 * 60 * 1000; // 1 minute in milliseconds
+  const cooldownTime = 1000 * 60 * 1; // 1 minute in milliseconds
 
   // Function to interpolate between two colours
   function interpolateColour(colour1, colour2, factor) {
@@ -71,18 +71,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Change the GIF based on BPM value
       const catGif = document.getElementById('fairy-gif');
-      if (bpm > 90 && currentGif !== 'dark fairy.gif') {
+      if (bpm > 79 && currentGif !== 'dark fairy.gif') {
         catGif.src = 'dark fairy.gif';
         catGif.alt = 'Dark Fairy';
         currentGif = 'dark fairy.gif';
-      } else if (bpm <= 90 && currentGif !== 'light fairy.gif') {
+      } else if (bpm <= 79 && currentGif !== 'light fairy.gif') {
         catGif.src = 'light fairy.gif';
         catGif.alt = 'Light Fairy';
         currentGif = 'light fairy.gif';
       }
 
       // Play or stop the audio based on BPM value
-      if (bpm > 100) {
+      if (bpm > 90) {
         if (audio.paused) {
           audio.play();
         }
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const currentTime = Date.now();
       console.log(`Current Time: ${currentTime}, Last Video Play Time: ${lastVideoPlayTime}, Cooldown Time: ${cooldownTime}`);
       console.log(`Time since last video played: ${currentTime - lastVideoPlayTime}`);
-      if (bpm >= 90 && (currentTime - lastVideoPlayTime) >= cooldownTime) {
+      if (bpm >= 92 && (currentTime - lastVideoPlayTime) >= cooldownTime) {
         if (!videoPlaying) {
           console.log('Playing video');
           video.style.display = 'block';
@@ -129,14 +129,16 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Example: Update the position of the BPM text
-  document.documentElement.style.setProperty('--bpm-top', '940px');
-  document.documentElement.style.setProperty('--bpm-left', '340px');
+  document.documentElement.style.setProperty('--bpm-top', '939px');
+  document.documentElement.style.setProperty('--bpm-left', '320px');
 
   // Example: Update the position of the LEVEL text
   document.documentElement.style.setProperty('--level-top', '890px');
   document.documentElement.style.setProperty('--level-right', '100px');
 
   // Example: Update the position of the .fairy text
-  document.documentElement.style.setProperty('--fairy-top', '20px');
-  document.documentElement.style.setProperty('--fairy-left', '80px');
+  document.documentElement.style.setProperty('--fairy-top', '7.8px');
+  document.documentElement.style.setProperty('--fairy-left', '26px');
 });
+
+// ffmpeg -i "C:\hi\tip bar.mov" -c:v libvpx-vp9 -b:v 2M -pix_fmt yuva420p "C:\hi\output2.webm"
