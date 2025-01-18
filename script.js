@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Change the GIF based on BPM value
       const catGif = document.getElementById('fairy-gif');
-      if (bpm > 90 && currentGif !== 'dark fairy.gif') {
+      if (bpm > 85 && currentGif !== 'dark fairy.gif') {
         catGif.src = 'dark fairy.gif';
         catGif.alt = 'Dark Fairy';
         currentGif = 'dark fairy.gif';
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // Play or stop the audio based on BPM value
-      if (bpm > 120) {
+      if (bpm > 100) {
         if (audio.paused) {
           audio.play();
           // Show the red overlay and apply the animation
