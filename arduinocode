@@ -1,0 +1,50 @@
+// Pins
+const int heartRatePin = A0;
+
+// Variables
+int signal;                // To store analog signal
+int BPM = 0;               // BPM variable
+int pulseThreshold = 512;  // Threshold for detecting a beat
+bool pulseDetected = false;
+unsigned long lastBeatTime = 0;
+unsigned long intervalBetweenBeats = 0;
+unsigned long lastPrintTime = 0;  // Time when BPM was last printed
+const unsigned long printInterval = 1000;  // Print BPM every 1 second
+
+void setup() {
+  Serial.begin(9600);  // Start the serial monitor
+  pinMode(heartRatePin, INPUT);  // Set the heart rate pin as input
+}
+
+void loop() {
+  unsigned long currentMillis = millis();  // Get the current time
+  signal = analogRead(heartRatePin);  // Read the sensor value
+
+  // Detect a beat
+  if (signal > pulseThreshold && !pulseDetected) {
+    pulseDetected = true;  // Mark the pulse as detected
+    unsigned long currentTime = millis();
+    intervalBetweenBeats = currentTime - lastBeatTime;  // Calculate time since the last beat
+    lastBeatTime = currentTime;
+
+    // Calculate BPM only if interval is valid (to avoid divide-by-zero or false readings)
+    if (intervalBetweenBeats > 0) {
+      BPM = 60000 / intervalBetweenBeats;  // Convert time interval to BPM
+    }
+  }
+
+  // Reset pulse detection after the signal drops
+  if (signal < pulseThreshold) {
+    pulseDetected = false;
+  }
+
+  // Print BPM every 1 second
+  if (currentMillis - lastPrintTime >= printInterval) {
+    lastPrintTime = currentMillis;
+    if (BPM > 30 && BPM < 200) {  // Only print plausible BPM values
+      Serial.println(BPM);
+    } else {
+      Serial.println("Waiting for valid BPM...");
+    }
+  }
+}

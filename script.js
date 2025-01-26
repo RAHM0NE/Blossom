@@ -1,17 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Connect to WebSocket server
-  const ws = new WebSocket('ws://localhost:8080');
-  let currentGif = 'light-fairy.gif'; // Track the current GIF
-  const audio = document.getElementById('high-bpm-audio'); // Get the audio element
-  const video = document.getElementById('bpm-video'); // Get the video element
-  const popupText = document.getElementById('popup-text'); // Get the popup text element
-  const redOverlay = document.getElementById('red-overlay'); // Get the red overlay element
-  audio.volume = 0.5; // Set the volume to 50%
-  let videoPlaying = false; // Flag to track if the video is playing
-  let lastVideoPlayTime = 0; // Timestamp of the last time the video was played
-  const cooldownTime = 1 * 60 * 1000; // 1 minute in milliseconds
 
-  // Array of text options
+  const ws = new WebSocket('ws://localhost:8080');  // connecting to WebSocket 
+  let currentGif = 'light-fairy.gif'; // tracking the current GIF
+  const audio = document.getElementById('high-bpm-audio'); // pokemon ping noise
+  const video = document.getElementById('bpm-video'); // notification bar
+  const popupText = document.getElementById('popup-text'); // text element
+  const redOverlay = document.getElementById('red-overlay'); // red overlay element
+  audio.volume = 0.5; // for the audio
+  let videoPlaying = false; // flag to track if the video is playing
+  let lastVideoPlayTime = 0; // timestamp of the last time the video was played
+  const cooldownTime = 0.5 * 60 * 1000; // change depending on how often you want the notification popping up (ms)
+
+  // array of text options
   const textOptions = [
     "I'm wilting, take a deep breath!",
     "Relax and let our flower grow.",
@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     "Take a deep breath, the inner game is yours to win.",
     "Remember. Stay relaxed. Stay concentrated. You got this!",
     "The ego-mind is powerful, do your best to fight it and stay calm!",
-    "Quiet our other half, friend. We're in control here.",
     "Your negative judgements are nothing but our other selves' reactions. Let them go :)",
     "See your plays as they are. Only then can you improve them.",
     "Have faith in your ability, you're improving with every play!",
@@ -30,20 +29,13 @@ document.addEventListener('DOMContentLoaded', () => {
     "You are more than the outcome of this game.",
     "Allow me as your Self 2 to have some fun, I've got this!",
     "I'm your greatest resource, friend. Use me wisely!",
-    "Hey! Listen! Stay aware in the moment, okay?!",
     "Ask yourself, how would you like to play this next part?",
     "Encourage your plays, but don't force them!",
     "Don't think of a habit as bad, rather ask yourself! What function does it serve?",
-    "Hey! Don't try too hard. Just let it happen.",
-    "Trust in me! I'll do the changes for you, simply relax, friend.",
     "In true competition no person is defeated. Don't stop learning.",
-    "Stay determined and trust in me, friend.",
-    "My power's fading...! Don't let our other self rob the fun from us!",
-    "Focus. I'll do the rest from there.",
-    "Patience is key to good plays. Leave the rest to me.",
   ];
 
-  // Function to interpolate between two colours
+  // function to interpolate between two colours
   function interpolateColour(colour1, colour2, factor) {
     const result = colour1.slice();
     for (let i = 0; i < 3; i++) {
@@ -52,17 +44,17 @@ document.addEventListener('DOMContentLoaded', () => {
     return `rgb(${result.join(',')})`;
   }
 
-  // Convert hex colour to RGB array
+  // function to convert hex colour to RGB array
   function hexToRgb(hex) {
     const bigint = parseInt(hex.slice(1), 16);
     return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
   }
 
-  const colour1 = hexToRgb('#FFFFFF'); // White
-  const colour2 = hexToRgb('#FFA500'); // Orange
-  const colour3 = hexToRgb('#FF0000'); // Red
+  const colour1 = hexToRgb('#FFFFFF');
+  const colour2 = hexToRgb('#FFA500'); 
+  const colour3 = hexToRgb('#FF0000'); 
 
-  // Enable media playback on user interaction
+  // enable media playback on user interaction
   function enableMediaPlayback() {
     audio.play().then(() => {
       audio.pause();
@@ -83,16 +75,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener('click', enableMediaPlayback);
 
-  // Update BPM on the webpage
+  // update BPM on the webpage
   ws.onmessage = (event) => {
-    console.log('Received data:', event.data); // Debugging line
+    console.log('Received data:', event.data); // debugging
     const bpm = parseInt(event.data, 10);
-    console.log('Parsed BPM:', bpm); // Debugging line
-
+    console.log('Parsed BPM:', bpm); // also debugging 
     if (!isNaN(bpm)) {
       document.querySelector('.bpm').innerHTML = `${bpm} <span class="bpm-text">BPM</span>`;
 
-      // Calculate the colour based on BPM
+      // calculate the colour based on BPM
       let colour;
       if (bpm <= 80) {
         const factor = (bpm - 60) / (80 - 60);
@@ -103,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       document.querySelector('.bpm').style.color = colour;
 
-      // Change the GIF based on BPM value
+      // change gif based on bpm
       const catGif = document.getElementById('fairy-gif');
       if (bpm > 85 && currentGif !== 'dark fairy.gif') {
         catGif.src = 'dark fairy.gif';
@@ -115,25 +106,25 @@ document.addEventListener('DOMContentLoaded', () => {
         currentGif = 'light fairy.gif';
       }
 
-      // Play or stop the audio based on BPM value
+      // play or stop the audio based on BPM 
       if (bpm > 100) {
         if (audio.paused) {
           audio.play();
-          // Show the red overlay and apply the animation
+          // show the red overlay and apply the animation
           redOverlay.classList.add('active');
           redOverlay.classList.remove('inactive');
         }
       } else {
         if (!audio.paused) {
           audio.pause();
-          audio.currentTime = 0; // Reset the audio to the beginning
-          // Hide the red overlay
+          audio.currentTime = 0; // reset the audio to the beginning
+          // hide the red overlay below
           redOverlay.classList.add('inactive');
-          redOverlay.classList.remove('active');
+          redOverlay.classList.remove('active'); 
         }
       }
 
-      // Play the video and show text based on BPM value and cooldown
+      // play the video and show text based on BPM value and cooldown
       const currentTime = Date.now();
       console.log(`Current Time: ${currentTime}, Last Video Play Time: ${lastVideoPlayTime}, Cooldown Time: ${cooldownTime}`);
       console.log(`Time since last video played: ${currentTime - lastVideoPlayTime}`);
@@ -146,34 +137,34 @@ document.addEventListener('DOMContentLoaded', () => {
           lastVideoPlayTime = currentTime; // Update the last play time
           console.log(`Video started at: ${lastVideoPlayTime}`);
 
-          // Randomly select and display text
+          // randomly select and display msg
           const randomText = textOptions[Math.floor(Math.random() * textOptions.length)];
           popupText.innerHTML = randomText;
           popupText.classList.remove('fade-out');
           popupText.classList.add('fade-in');
           popupText.style.display = 'block';
 
-          // Hide the text a few seconds before the video ends
+          // hide the text a few seconds before the video ends
           const hideTextTime = video.duration - 1.45; // 1.45 seconds before the video ends
           setTimeout(() => {
             popupText.classList.remove('fade-in');
             popupText.classList.add('fade-out');
             setTimeout(() => {
-              popupText.style.display = 'none'; // Hide the text after fade-out animation
-            }, 1000); // Match the duration of the fade-out animation
-          }, hideTextTime * 1000); // Convert to milliseconds
+              popupText.style.display = 'none';
+            }, 1000); 
+          }, hideTextTime * 1000); 
         }
+      } else {
+        console.error('Invalid BPM value:', event.data); // debugging 
       }
-    } else {
-      console.error('Invalid BPM value:', event.data); // Debugging line
-    }
+    };
   };
 
-  // Event listener for when the video ends
+  // listener for when the video ends
   video.addEventListener('ended', () => {
     video.style.display = 'none';
     videoPlaying = false;
-    lastVideoPlayTime = Date.now(); // Update the last play time when the video ends
+    lastVideoPlayTime = Date.now(); // updates the last play time when the video ends
     console.log(`Video ended at: ${lastVideoPlayTime}`);
   });
 
@@ -185,19 +176,19 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('WebSocket disconnected');
   };
 
-  // Example: Update the position of the BPM text
+  //  BPM text
   document.documentElement.style.setProperty('--bpm-top', '939px');
   document.documentElement.style.setProperty('--bpm-left', '320px');
 
-  // Example: Update the position of the LEVEL text
+  // logo
   document.documentElement.style.setProperty('--level-top', '890px');
   document.documentElement.style.setProperty('--level-right', '100px');
 
-  // Example: Update the position of the .fairy text
+  // fairy 
   document.documentElement.style.setProperty('--fairy-top', '10px');
   document.documentElement.style.setProperty('--fairy-left', '27px');
 
-  // Example: Update the position of the .advice text
+  // advice text
   document.documentElement.style.setProperty('--advice-top', '56px');
   document.documentElement.style.setProperty('--advice-left', '138px');
 });
