@@ -44,8 +44,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column; /* Ensure elements are stacked vertically */
-  margin: 0 auto; /* Center the body content */
+  flex-direction: column; 
+  margin: 0 auto; 
 }
 
 h1 {
@@ -57,8 +57,8 @@ h1 {
   right: var(--level-right);
   bottom: var(--level-bottom);
   left: var(--level-left);
-  margin: 40px; /* Optional: Add some margin if needed */
-  -webkit-text-stroke: 1px #000; /* Stroke border */
+  margin: 40px; 
+  -webkit-text-stroke: 1px #000; 
   text-shadow: 2px 2px 0px rgba(0, 0, 0, 1),
 
   
@@ -70,14 +70,14 @@ h1 {
 }
 
 .centered-gif {
-  width: 100px; /* Adjust the size as needed */
-  margin-bottom: 20px; /* Space between the GIF and the h1 */
+  width: 100px;
+  margin-bottom: 20px; 
   top: var(--fairy-top);
   right: var(--fairy-right);
   bottom: var(--fairy-bottom);
   left: var(--fairy-left);
   position: absolute;
-  z-index: 4; /* Ensure the video is below the GIF */
+  z-index: 4; 
 
 
 }
@@ -93,8 +93,8 @@ h1 {
   right: var(--bpm-right);
   bottom: var(--bpm-bottom);
   left: var(--bpm-left);
-  margin: 40px; /* Optional: Add some margin if needed */
-  -webkit-text-stroke: 2.5px #000; /* Stroke border */
+  margin: 40px; 
+  -webkit-text-stroke: 2.5px #000;
   text-shadow: 2px 2px 0px rgba(0, 0, 0, 1),
 
   
@@ -103,16 +103,16 @@ h1 {
   3px 8px 0px rgba(0, 0, 0, 1),
   4px 9px 0px rgba(0, 0, 0, 1);
   
-  letter-spacing: -3.6px; /* Reduce the space between characters */
+  letter-spacing: -3.6px;
 
 }
 
 .bpm-text {
-  font-size: 0.5em; /* Make the BPM text smaller */  
-  -webkit-text-stroke: 1.2px #000; /* Stroke border */
-  letter-spacing: -2px; /* Reduce the space between characters */
-  position: relative; /* Enable relative positioning */
-  left: -9px; /* Adjust this value to push the text to the left */
+  font-size: 0.5em;
+  -webkit-text-stroke: 1.2px #000; 
+  letter-spacing: -2px;
+  position: relative; 
+  left: -9px;
 
 }
 
@@ -122,8 +122,8 @@ h1 {
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none; /* Ensure the video doesn't interfere with other interactions */
-  z-index: 2; /* Ensure the video is below the GIF */
+  pointer-events: none;
+  z-index: 2; 
 
 }
 
@@ -146,25 +146,25 @@ h1 {
   right: var(--advice-right);
   bottom: var(--advice-bottom);
   left: var(--advice-left);
-  z-index: 2; /* Ensure the text is on top of the video */
-  transition: opacity 1s; /* Smooth transition for opacity changes */
+  z-index: 2; 
+  transition: opacity 1s; 
 
 }
 
 .popup-text.fade-in {
-  animation: fadeIn 3s forwards; /* Apply fade-in animation */
+  animation: fadeIn 3s forwards; 
 }
 
 .popup-text.fade-out {
-  animation: fadeOut 3s forwards; /* Apply fade-out animation */
+  animation: fadeOut 3s forwards; 
 }
 
 .popup-text.fade-out {
-  animation: fadeOut 3s forwards; /* Apply fade-out animation */
+  animation: fadeOut 3s forwards; 
 }
 
 .popup-text.fade-out {
-  animation: fadeOut 3s forwards; /* Apply fade-out animation */
+  animation: fadeOut 3s forwards;
 }
 
 .red-overlay {
@@ -173,23 +173,23 @@ h1 {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 0, 0, 0.5); /* Semi-transparent red */
-  pointer-events: none; /* Allow clicks to pass through */
-  z-index: 1; /* Ensure the overlay is on top of other elements */
-  opacity: 0; /* Start with no opacity */
-  transition: opacity 2s ease-in-out; /* Smooth transition for opacity */
+  background-color: rgba(255, 0, 0, 0.5); 
+  pointer-events: none; 
+  z-index: 1;
+  opacity: 0; 
+  transition: opacity 2s ease-in-out; 
 }
 
 
 .red-overlay.active {
   display: block;
-  animation: pulse 1s infinite; /* Apply the pulse animation */
-  opacity: 1; /* Fade in */
+  animation: pulse 1s infinite;
+  opacity: 1;
 }
 
 .red-overlay.inactive {
-  opacity: 0; /* Fade out */
-  animation: none; /* Stop the pulse animation */
+  opacity: 0;
+  animation: none; 
 }
 
 @keyframes pulse {
@@ -201,11 +201,3 @@ h1 {
   }
 }
 
-.blossom-logo {
-  position: fixed;
-  bottom: 40px; /* Adjust the distance from the bottom as needed */
-  right: 60px; /* Adjust the distance from the right as needed */
-  width: 200px; /* Adjust the size as needed */
-  height: auto; /* Maintain aspect ratio */
-  z-index: 4; /* Ensure the logo is on top of other elements */
-}
